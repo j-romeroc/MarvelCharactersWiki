@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MarvelCharactersWiki.iml" filepath="$PROJECT_DIR$/.idea/modules/MarvelCharactersWiki.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MarvelCharactersWiki.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MarvelCharactersWiki.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/MarvelCharactersWiki.core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/MarvelCharactersWiki.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data/MarvelCharactersWiki.data.iml" filepath="$PROJECT_DIR$/.idea/modules/data/MarvelCharactersWiki.data.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/di/MarvelCharactersWiki.di.iml" filepath="$PROJECT_DIR$/.idea/modules/di/MarvelCharactersWiki.di.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/MarvelCharactersWiki.domain.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/MarvelCharactersWiki.domain.iml" />
+    </modules>
+  </component>
+</project>
