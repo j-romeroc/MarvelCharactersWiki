@@ -13,7 +13,7 @@ class CharactersUseCase(private val characterRepo: CharactersListRepo) {
 
     private var offset = 1
 
-    fun execute(callback:(LayerResult<List<CharacterEntity>>?) -> Unit) {
+    fun execute(callback: (LayerResult<List<CharacterEntity>>?) -> Unit) {
 
         GlobalScope.launch(Dispatchers.Main) {
 

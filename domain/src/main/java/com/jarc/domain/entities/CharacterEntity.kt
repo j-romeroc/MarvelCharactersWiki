@@ -3,7 +3,7 @@ package com.jarc.domain.entities
 import com.jarc.core.utils.StoryType
 
 
-data class CharacterEntity (
+data class CharacterEntity(
     val id: Long,
     val name: String,
     val description: String,
@@ -21,7 +21,8 @@ data class Publishings(
     val available: Long,
     val collectionURI: String,
     val items: List<Any>,
-    val returned: Long)
+    val returned: Long
+)
 
 data class PublishingItem(
     val resourceURI: String,
@@ -29,12 +30,12 @@ data class PublishingItem(
     val type: StoryType? = null
 )
 
-data class Thumbnail (
+data class Thumbnail(
     val path: String,
     val extension: String
 )
 
-data class URL (
+data class URL(
     val type: String,
     val url: String
 )

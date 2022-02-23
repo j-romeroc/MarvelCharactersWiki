@@ -13,15 +13,18 @@ import kotlinx.coroutines.launch
 
 class ImagesUseCase(private val imageRepo: ImageRepo) {
 
-    fun execute(imageInfo: Thumbnail,
-                origin: AspectRatio.Origin,
-                callback: (LayerResult<Bitmap>) -> Unit){
+    fun execute(
+        imageInfo: Thumbnail,
+        origin: AspectRatio.Origin,
+        callback: (LayerResult<Bitmap>) -> Unit
+    ) {
 
-
-        val url = getImageUrl(path = imageInfo.path,
-                extension = imageInfo.extension,
-                size = AspectRatio.ImageSize.MEDIUM,
-                origin = origin)
+        val url = getImageUrl(
+            path = imageInfo.path,
+            extension = imageInfo.extension,
+            size = AspectRatio.ImageSize.MEDIUM,
+            origin = origin
+        )
 
         GlobalScope.launch(Dispatchers.Main) {
 

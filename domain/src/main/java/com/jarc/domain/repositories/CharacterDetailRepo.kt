@@ -5,5 +5,8 @@ import com.jarc.domain.entities.CharacterEntity
 
 interface CharacterDetailRepo {
 
-    suspend fun fetchCharacterDetail(characterId: String, callback: (LayerResult<CharacterEntity>?) -> Unit)
+    suspend fun fetchCharacterDetail(
+        characterId: String,
+        callback: (LayerResult<CharacterEntity>?) -> Unit
+    )
 }

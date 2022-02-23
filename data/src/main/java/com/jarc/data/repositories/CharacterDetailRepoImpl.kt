@@ -8,16 +8,17 @@ import com.jarc.domain.repositories.CharacterDetailRepo
 import com.jarc.domain.entities.CharacterEntity
 
 
-class CharacterDetailRepoImpl(private val service: CharacterService): CharacterDetailRepo {
+class CharacterDetailRepoImpl(private val service: CharacterService) : CharacterDetailRepo {
 
 
-    override suspend fun fetchCharacterDetail(characterId: String,
-                                      callback: (LayerResult<CharacterEntity>?) -> Unit) {
-
+    override suspend fun fetchCharacterDetail(
+        characterId: String,
+        callback: (LayerResult<CharacterEntity>?) -> Unit
+    ) {
 
         service.fetchCharacterDetail(characterId) { result ->
 
-            try{
+            try {
                 when (result) {
                     is LayerResult.Success -> {
 
@@ -27,11 +28,14 @@ class CharacterDetailRepoImpl(private val service: CharacterService): CharacterD
                     }
                     is LayerResult.Error -> {
 
-                        throw CustomError(originLayer = CustomError.OriginLayer.DATA_LAYER,
-                            underLyingError = (result.error as CustomError).getUnderlyingError())
+                        throw CustomError(
+                            originLayer = CustomError.OriginLayer.DATA_LAYER,
+                            underLyingError = (result.error as CustomError).getUnderlyingError()
+                        )
                     }
+                    else -> {}
                 }
-            }catch (e: Throwable){
+            } catch (e: Throwable) {
 
                 callback(LayerResult.Error(e))
             }

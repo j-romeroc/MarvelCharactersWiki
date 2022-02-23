@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class CharacterDetailUseCase(private val characterDetailRepo: CharacterDetailRepo) {
 
-    fun execute(characterId: String,callback:(LayerResult<CharacterEntity>?) -> Unit) {
+    fun execute(characterId: String, callback: (LayerResult<CharacterEntity>?) -> Unit) {
 
         GlobalScope.launch(Dispatchers.Main) {
 
@@ -29,6 +29,7 @@ class CharacterDetailUseCase(private val characterDetailRepo: CharacterDetailRep
                                 underLyingError = (result.error as CustomError).getUnderlyingError()
                             )
                         }
+                        else -> {}
                     }
                 } catch (e: Throwable) {
 

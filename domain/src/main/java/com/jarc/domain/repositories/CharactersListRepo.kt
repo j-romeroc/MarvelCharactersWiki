@@ -5,6 +5,8 @@ import com.jarc.domain.entities.CharacterEntity
 
 interface CharactersListRepo {
 
-    suspend fun fetchCharactersList(offsetFactor: Int,
-                            callback: (LayerResult<List<CharacterEntity>>?) -> Unit)
+    suspend fun fetchCharactersList(
+        offsetFactor: Int,
+        callback: (LayerResult<List<CharacterEntity>>?) -> Unit
+    )
 }

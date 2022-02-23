@@ -30,7 +30,7 @@ class CustomError(private var underLyingError: Throwable, private val originLaye
             }
         }
 
-    fun getErrorDetailedMsg() = underLyingError.localizedMessage
+    fun getErrorDetailedMsg(): String = underLyingError.localizedMessage
 
 }
 

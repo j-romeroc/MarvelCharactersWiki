@@ -8,6 +8,7 @@ enum class StoryType {
 const val BASE_CHARACTERS_URL = "https://gateway.marvel.com/v1/public/"
 const val CHARACTERS_ENDPOINT = "characters"
 
+const val BASE_IMAGE_URL = "http://i.annihil.us"
 
 const val DATA_LIMIT = "40"
 
