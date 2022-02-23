@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import com.jarc.core.utils.AspectRatio
 import com.jarc.core.utils.LayerResult
 import com.jarc.marvelcharacterswiki.R
+import com.jarc.marvelcharacterswiki.databinding.FragmentCharacterDetailBinding
 import com.jarc.marvelcharacterswiki.models.CharacterDetailModel
 import com.jarc.marvelcharacterswiki.models.Thumbnail
 import com.jarc.marvelcharacterswiki.ui.presenters.CharacterPresenter
@@ -21,26 +22,29 @@ class CharacterDetailFragment : Fragment() {
 
     private val presenter: CharacterPresenter by inject(CharacterPresenter::class.java)
 
+    private lateinit var binding: FragmentCharacterDetailBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        return inflater.inflate(R.layout.fragment_character_detail, container, false)
+    ): View {
+        binding = FragmentCharacterDetailBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val characterId = arguments?.let { CharacterDetailFragmentArgs.fromBundle(it).characterId}
+        val characterId = arguments?.let { CharacterDetailFragmentArgs.fromBundle(it).characterId }
 
         if (characterId != null) {
-            presenter.fetchCharacterDetail(characterId){ result ->
+            presenter.fetchCharacterDetail(characterId) { result ->
 
-                activity?.runOnUiThread{
+                activity?.runOnUiThread {
 
-                    when(result) {
+                    when (result) {
                         is LayerResult.Success -> {
                             result.value?.let { renderView(it) }
                         }
@@ -56,29 +60,31 @@ class CharacterDetailFragment : Fragment() {
 
     private fun renderView(character: CharacterDetailModel) {
 
-        character_name.text = character.name
-        character_description.text = if(character.description.isNotEmpty()) character.description else "Description not available"
+        binding.tvCharacterName.text = character.name
+        binding.tvCharacterDescription.text =
+            character.description.ifEmpty { "Description not available" }
 
+        binding.tvComicsCount.text = "${character.comicsCount} Comics"
+        binding.tvSeriesCount.text = "${character.seriesCount} Series"
+        binding.tvStoriesCount.text = "${character.storiesCount} Stories"
 
-        comics_count.text = "${character.comicsCount} Comics"
-        series_count.text = "${character.seriesCount} Series"
-        stories_count.text = "${character.storiesCount} Stories"
-
-        more_info_btn.setOnClickListener {
-            val action = CharacterDetailFragmentDirections.actionSecondFragmentToWebview(character.detailUrl)
-            more_info_btn.findNavController().navigate(action)
+        binding.btnMoreInfo.setOnClickListener {
+            val action =
+                CharacterDetailFragmentDirections.actionSecondFragmentToWebview(character.detailUrl)
+            binding.btnMoreInfo.findNavController().navigate(action)
         }
 
         presenter.fetchImage(
-            imageInfo = Thumbnail(character.thumbnail.path,character.thumbnail.extension),
-            origin = AspectRatio.Origin.DETAIL){bmp ->
+            imageInfo = Thumbnail(character.thumbnail.path, character.thumbnail.extension),
+            origin = AspectRatio.Origin.DETAIL
+        ) { bmp ->
 
             activity?.runOnUiThread {
 
                 when (bmp) {
                     is LayerResult.Success -> {
 
-                        character_image.setImageBitmap(bmp.value)
+                        binding.characterImage.setImageBitmap(bmp.value)
                     }
                     is LayerResult.Error -> {
 
@@ -87,7 +93,7 @@ class CharacterDetailFragment : Fragment() {
                             R.drawable.image_not_available_marvel
                         )
 
-                        character_image.setImageBitmap(defaultBmp)
+                        binding.characterImage.setImageBitmap(defaultBmp)
                     }
                 }
 
@@ -101,8 +107,10 @@ class CharacterDetailFragment : Fragment() {
 
         activity?.let {
 
-            ViewUtils.onDialog("Error getting Marvel Character",
-                it){}
+            ViewUtils.onDialog(
+                "Error getting Marvel Character",
+                it
+            ) {}
         }
     }
 

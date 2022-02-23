@@ -43,6 +43,7 @@ class ImagesUseCase(private val imageRepo: ImageRepo) {
                                 underLyingError = (result.error as CustomError).getUnderlyingError()
                             )
                         }
+                        else -> {}
                     }
                 } catch (e: Throwable) {
 

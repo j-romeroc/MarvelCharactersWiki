@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/joshu/Repo/marvel-characters-android-master/app/src/main/res/layout/fragment_character_detail.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/joshu/Repo/marvel-characters-android-master/app/src/main/res/layout/fragment_characters_list.xml" value="0.358695652173913" />
         <entry key="..\:/Users/joshu/Repo/marvel-characters-android-master/app/src/main/res/layout/fragment_web_view.xml" value="0.358695652173913" />
       </map>
     </option>
