@@ -107,7 +107,6 @@ class CharactersListFragment : Fragment() {
         val lastPosition = if (adapter.characters.isNullOrEmpty()) 0 else adapter.characters.size
         adapter.characters.addAll(characters)
 
-
         Log.d("Fragment List", "CharacterslistReceived")
 
         adapter.notifyItemRangeInserted(lastPosition, characters.size)

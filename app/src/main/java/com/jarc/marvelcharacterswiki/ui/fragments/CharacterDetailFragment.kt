@@ -107,8 +107,11 @@ class CharacterDetailFragment : Fragment() {
 
         activity?.let {
 
+            val errorMessage =
+                if (!errorInfo.localizedMessage.isNullOrEmpty()) errorInfo.localizedMessage else "Error getting Marvel Character"
+
             ViewUtils.onDialog(
-                "Error getting Marvel Character",
+                errorMessage,
                 it
             ) {}
         }

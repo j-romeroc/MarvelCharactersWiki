@@ -43,7 +43,7 @@ class WebViewFragment : Fragment() {
                 this.javaScriptEnabled = true
             }
 
-            binding.detailWebview.scrollIndicators = View.SCROLLBARS_INSIDE_OVERLAY
+            binding.detailWebview.scrollIndicators = View.SCROLL_INDICATOR_BOTTOM
 
             binding.progressBarWebview.visibility = View.VISIBLE
 
