@@ -26,7 +26,6 @@ class CharacterPresenterImpl(
         characterUseCase.execute { uiResult: LayerResult<List<CharacterEntity>>? ->
 
             try {
-
                 when (uiResult) {
 
                     is LayerResult.Success -> {
@@ -40,6 +39,7 @@ class CharacterPresenterImpl(
                             underLyingError = (uiResult.error as CustomError).getUnderlyingError()
                         )
                     }
+                    else -> {}
                 }
             } catch (ce: CustomError) {
 
@@ -81,6 +81,7 @@ class CharacterPresenterImpl(
                             underLyingError = (uiResult.error as CustomError).getUnderlyingError()
                         )
                     }
+                    else -> {}
                 }
             } catch (e: Throwable) {
 

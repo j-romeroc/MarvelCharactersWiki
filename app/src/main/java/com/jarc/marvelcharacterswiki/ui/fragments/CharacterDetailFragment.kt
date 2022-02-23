@@ -2,10 +2,10 @@ package com.jarc.marvelcharacterswiki.ui.fragments
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.jarc.core.utils.AspectRatio
 import com.jarc.core.utils.LayerResult
@@ -15,7 +15,6 @@ import com.jarc.marvelcharacterswiki.models.CharacterDetailModel
 import com.jarc.marvelcharacterswiki.models.Thumbnail
 import com.jarc.marvelcharacterswiki.ui.presenters.CharacterPresenter
 import com.jarc.marvelcharacterswiki.ui.utils.ViewUtils
-import kotlinx.android.synthetic.main.fragment_character_detail.*
 import org.koin.java.KoinJavaComponent.inject
 
 class CharacterDetailFragment : Fragment() {
@@ -62,7 +61,7 @@ class CharacterDetailFragment : Fragment() {
 
         binding.tvCharacterName.text = character.name
         binding.tvCharacterDescription.text =
-            character.description.ifEmpty { "Description not available" }
+            character.description.ifEmpty { activity?.resources?.getString(R.string.description_not_available) }
 
         binding.tvComicsCount.text = "${character.comicsCount} Comics"
         binding.tvSeriesCount.text = "${character.seriesCount} Series"
@@ -108,7 +107,9 @@ class CharacterDetailFragment : Fragment() {
         activity?.let {
 
             val errorMessage =
-                if (!errorInfo.localizedMessage.isNullOrEmpty()) errorInfo.localizedMessage else "Error getting Marvel Character"
+                if (!errorInfo.localizedMessage.isNullOrEmpty()) errorInfo.localizedMessage else activity?.resources?.getString(
+                    R.string.error_getting_character
+                ) ?: ""
 
             ViewUtils.onDialog(
                 errorMessage,

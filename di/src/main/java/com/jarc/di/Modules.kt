@@ -63,3 +63,4 @@ val imageServiceModule = module {
     fun provideImageServiceModule() = ImageService()
     single { provideImageServiceModule() }
 }
+

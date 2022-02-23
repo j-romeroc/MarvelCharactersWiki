@@ -35,6 +35,7 @@ class CharactersUseCase(private val characterRepo: CharactersListRepo) {
                                 underLyingError = (result.error as CustomError).getUnderlyingError()
                             )
                         }
+                        else -> {}
                     }
                 } catch (ce: CustomError) {
 

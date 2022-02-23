@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">MarvelCharactersWiki</string>
     <string name="appears_on">Appears on:</string>
-    <string name="more_info">More info...</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="more_info">More info…</string>
+    <string name="description_not_available">Description not available</string>
+    <string name="error_getting_character">"Error getting Marvel Character"</string>
+
 </resources>
