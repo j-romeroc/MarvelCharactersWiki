@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jarc.core.utils.CustomError
 import com.jarc.core.utils.LayerResult
+import com.jarc.domain.models.CharacterModel
 import com.jarc.marvelcharacterswiki.R
 import com.jarc.marvelcharacterswiki.databinding.FragmentCharactersListBinding
 import com.jarc.marvelcharacterswiki.ui.adapters.CharacterListAdapter
@@ -17,15 +18,17 @@ import com.jarc.marvelcharacterswiki.models.CharacterModel
 import com.jarc.marvelcharacterswiki.ui.presenters.CharacterPresenterImpl
 import com.jarc.marvelcharacterswiki.ui.utils.ViewUtils
 import com.jarc.marvelcharacterswiki.ui.presenters.CharacterPresenter
+import com.jarc.marvelcharacterswiki.ui.viewmodels.CharacterViewModel
 import kotlinx.android.synthetic.main.fragment_characters_list.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.java.KoinJavaComponent.inject
 
 class CharactersListFragment : Fragment() {
 
-    private val presenter: CharacterPresenter by inject(CharacterPresenter::class.java)
+    private val viewModel by viewModel<CharacterViewModel>()
 
     private var adapter: CharacterListAdapter =
-        CharacterListAdapter(presenter as CharacterPresenterImpl)
+        CharacterListAdapter(viewModel)
 
     private lateinit var binding: FragmentCharactersListBinding
 

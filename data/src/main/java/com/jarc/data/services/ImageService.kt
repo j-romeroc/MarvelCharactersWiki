@@ -51,5 +51,23 @@ class ImageService {
 
     }
 
+    suspend fun getImage(url: String, callback: (Result<Bitmap>) -> Unit) {
+        withContext(Dispatchers.IO) {
+
+            try {
+
+                val response = restEndpoints.getImageAsync(url).await()
+
+                callback(Result.success(mapToBmp(response.bytes())))
+
+            } catch (e: Throwable) {
+                callback(Result.failure(CustomError(
+                    originLayer = CustomError.OriginLayer.DATA_LAYER,
+                    underLyingError = e
+                )))
+            }
+        }
+    }
+
     private fun mapToBmp(value: ByteArray) = BitmapFactory.decodeByteArray(value, 0, value.size)
 }

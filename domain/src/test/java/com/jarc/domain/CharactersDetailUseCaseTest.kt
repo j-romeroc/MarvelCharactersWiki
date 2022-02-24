@@ -6,7 +6,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import com.jarc.core.utils.CustomError
 import com.jarc.core.utils.LayerResult
-import com.jarc.domain.entities.CharacterEntity
+import com.jarc.domain.models.CharacterModel
 import com.jarc.domain.repositories.CharacterDetailRepo
 import com.jarc.domain.usecases.CharacterDetailUseCase
 import com.jarc.domain.utils.MainCoroutineRule
@@ -43,7 +43,7 @@ class CharactersDetailUseCaseTest {
 
         ).thenAnswer {
 
-            val callback = it.getArgument<((LayerResult<List<CharacterEntity>>) -> Unit)>(1)
+            val callback = it.getArgument<((LayerResult<List<CharacterModel>>) -> Unit)>(1)
             callback(LayerResult.Success(mock()))
         }
 
@@ -61,7 +61,7 @@ class CharactersDetailUseCaseTest {
                 runBlocking { repo.fetchCharacterDetail(eq("someId"), any()) }
 
         ).thenAnswer {
-            val callback = it.getArgument<((LayerResult<List<CharacterEntity>>) -> Unit)>(1)
+            val callback = it.getArgument<((LayerResult<List<CharacterModel>>) -> Unit)>(1)
             callback(
                     LayerResult.Error(
                             CustomError(Throwable("TestException"),

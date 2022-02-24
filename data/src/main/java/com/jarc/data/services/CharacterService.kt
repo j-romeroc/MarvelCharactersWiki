@@ -13,7 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class CharacterService() {
+class CharacterService {
 
     private var restEndpoints: CharacterEndpoints
 
@@ -25,6 +25,41 @@ class CharacterService() {
             .build()
 
         restEndpoints = retrofit.create(CharacterEndpoints::class.java)
+    }
+
+
+    suspend fun getCharactersList(
+        offsetFactor: Int,
+        callback: (Result<CharactersRawResponse>) -> Unit
+    ) {
+
+        val timeStampPlusHash = getTimeStampPlusHash()
+
+        withContext(Dispatchers.IO) {
+
+            try {
+                val result = restEndpoints.getCharactersAsync(
+                    offset = offsetFactor.getOffset(),
+                    hash = timeStampPlusHash[HASH] ?: "",
+                    ts = timeStampPlusHash[TIMESTAMP].toString()
+                ).await()
+
+                callback(Result.success(result))
+
+            } catch (e: Throwable) {
+
+                callback(
+                    Result.failure(
+                        CustomError(
+                            originLayer = CustomError.OriginLayer.DATA_LAYER,
+                            underLyingError = e
+                        )
+                    )
+                )
+            }
+
+        }
+
     }
 
 
@@ -65,11 +100,44 @@ class CharacterService() {
 
     }
 
+    suspend fun getCharacterDetail(
+        characterId: String,
+        callback: (Result<CharactersRawResponse>) -> Unit
+    ) {
+
+        val timeStampPlusHash = getTimeStampPlusHash()
+
+        withContext(Dispatchers.IO) {
+
+            try {
+                val result = restEndpoints.getCharacterDetailAsync(
+                    hash = timeStampPlusHash[HASH] ?: "",
+                    ts = timeStampPlusHash[TIMESTAMP].toString(),
+                    character = characterId
+                ).await()
+
+                callback(Result.success(result))
+
+            } catch (e: Throwable) {
+
+                callback(
+                    Result.failure(
+                        CustomError(
+                            originLayer = CustomError.OriginLayer.DATA_LAYER,
+                            underLyingError = e
+                        )
+                    )
+                )
+            }
+
+        }
+
+    }
+
     suspend fun fetchCharacterDetail(
         characterId: String,
         callback: (LayerResult<CharactersRawResponse>?) -> Unit
     ) {
-
 
         val timeStampPlusHash = getTimeStampPlusHash()
 

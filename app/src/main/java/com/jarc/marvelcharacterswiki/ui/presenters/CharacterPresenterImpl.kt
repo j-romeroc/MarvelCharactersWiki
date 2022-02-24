@@ -4,12 +4,12 @@ import android.graphics.Bitmap
 import com.jarc.core.utils.AspectRatio
 import com.jarc.core.utils.CustomError
 import com.jarc.core.utils.LayerResult
-import com.jarc.domain.entities.CharacterEntity
+import com.jarc.domain.models.CharacterModel
+import com.jarc.domain.models.Thumbnail
 import com.jarc.domain.usecases.CharacterDetailUseCase
 import com.jarc.domain.usecases.CharactersUseCase
 import com.jarc.domain.usecases.ImagesUseCase
 import com.jarc.marvelcharacterswiki.models.CharacterDetailModel
-import com.jarc.marvelcharacterswiki.models.CharacterModel
 import com.jarc.marvelcharacterswiki.models.DetailThumbnail
 import com.jarc.marvelcharacterswiki.models.Thumbnail
 
@@ -23,7 +23,7 @@ class CharacterPresenterImpl(
 
     override fun fetchCharacterList(callback: (LayerResult<List<CharacterModel>>) -> Unit) {
 
-        characterUseCase.execute { uiResult: LayerResult<List<CharacterEntity>>? ->
+        characterUseCase.execute { uiResult: LayerResult<List<CharacterModel>>? ->
 
             try {
                 when (uiResult) {
@@ -62,7 +62,7 @@ class CharacterPresenterImpl(
 
     override fun fetchCharacterDetail(
         characterId: String,
-        callback: (LayerResult<CharacterDetailModel>) -> Unit
+        callback: (LayerResult<CharacterModel>) -> Unit
     ) {
 
         characterDetailUseCase.execute(characterId) { uiResult ->
@@ -112,7 +112,7 @@ class CharacterPresenterImpl(
     ) {
 
         imagesUseCase.execute(
-            com.jarc.domain.entities.Thumbnail(
+            Thumbnail(
                 imageInfo.path,
                 imageInfo.extension
             ), origin
@@ -153,7 +153,7 @@ class CharacterPresenterImpl(
 
     //Private Methods
 
-    private fun mapDataListToUi(value: CharacterEntity?) =
+    private fun mapDataListToUi(value: CharacterModel?) =
 
         CharacterModel(
             id = value?.id ?: 0,
@@ -161,24 +161,24 @@ class CharacterPresenterImpl(
             thumbnail = Thumbnail(
                 value?.thumbnail?.path ?: "",
                 value?.thumbnail?.extension ?: ""
-            )
+            ),
         )
 
-    private fun mapDataToUi(characterEntity: CharacterEntity?) =
+    private fun mapDataToUi(characterModel: CharacterModel?) =
 
         CharacterDetailModel(
-            id = characterEntity?.id ?: 0,
-            name = characterEntity?.name ?: "",
-            description = characterEntity?.description ?: "",
+            id = characterModel?.id ?: 0,
+            name = characterModel?.name ?: "",
+            description = characterModel?.description ?: "",
             thumbnail = DetailThumbnail(
-                path = characterEntity?.thumbnail?.path ?: "",
-                extension = characterEntity?.thumbnail?.extension ?: ""
+                path = characterModel?.thumbnail?.path ?: "",
+                extension = characterModel?.thumbnail?.extension ?: ""
             ),
-            storiesCount = characterEntity?.stories?.available ?: 0,
-            seriesCount = characterEntity?.series?.available ?: 0,
-            comicsCount = characterEntity?.comics?.available ?: 0,
-            eventsCount = characterEntity?.events?.available ?: 0,
-            detailUrl = characterEntity?.urls?.find { it.type == "detail" }?.url ?: ""
+            storiesCount = characterModel?.stories?.available ?: 0,
+            seriesCount = characterModel?.series?.available ?: 0,
+            comicsCount = characterModel?.comics?.available ?: 0,
+            eventsCount = characterModel?.events?.available ?: 0,
+            detailUrl = characterModel?.urls?.find { it.type == "detail" }?.url ?: ""
         )
 
 

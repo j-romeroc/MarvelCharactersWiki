@@ -3,7 +3,7 @@ package com.jarc.domain
 import com.nhaarman.mockitokotlin2.*
 import com.jarc.core.utils.CustomError
 import com.jarc.core.utils.LayerResult
-import com.jarc.domain.entities.CharacterEntity
+import com.jarc.domain.models.CharacterModel
 import com.jarc.domain.repositories.CharactersListRepo
 import com.jarc.domain.usecases.CharactersUseCase
 import com.jarc.domain.utils.MainCoroutineRule
@@ -42,7 +42,7 @@ class CharactersUseCaseTest {
 
         ).thenAnswer {
 
-            val callback = it.getArgument<((LayerResult<List<CharacterEntity>>) -> Unit)>(1)
+            val callback = it.getArgument<((LayerResult<List<CharacterModel>>) -> Unit)>(1)
             callback(LayerResult.Success(mock()))
         }
 
@@ -60,7 +60,7 @@ class CharactersUseCaseTest {
                 runBlocking { repo.fetchCharactersList(eq(1), any()) }
 
         ).thenAnswer {
-            val callback = it.getArgument<((LayerResult<List<CharacterEntity>>) -> Unit)>(1)
+            val callback = it.getArgument<((LayerResult<List<CharacterModel>>) -> Unit)>(1)
             callback(
                     LayerResult.Error(
                             CustomError(Throwable("TestException"),

@@ -1,9 +1,9 @@
-package com.jarc.domain.entities
+package com.jarc.domain.models
 
 import com.jarc.core.utils.StoryType
 
 
-data class CharacterEntity(
+data class CharacterModel(
     val id: Long,
     val name: String,
     val description: String,

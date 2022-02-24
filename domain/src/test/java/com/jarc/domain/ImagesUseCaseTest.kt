@@ -7,7 +7,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import com.jarc.core.utils.CustomError
 import com.jarc.core.utils.LayerResult
-import com.jarc.domain.entities.Thumbnail
+import com.jarc.domain.models.Thumbnail
 import com.jarc.domain.repositories.ImageRepo
 import com.jarc.domain.usecases.ImagesUseCase
 import com.jarc.domain.utils.MainCoroutineRule

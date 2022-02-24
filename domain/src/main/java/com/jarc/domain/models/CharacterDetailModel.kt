@@ -1,4 +1,4 @@
-package com.jarc.marvelcharacterswiki.models
+package com.jarc.domain.models
 
 data class CharacterDetailModel(
     val id: Long,
@@ -15,4 +15,3 @@ data class DetailThumbnail (
     val path: String,
     val extension: String
 )
-

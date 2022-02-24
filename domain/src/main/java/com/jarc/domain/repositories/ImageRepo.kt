@@ -10,4 +10,9 @@ interface ImageRepo {
         url: String,
         callback: (LayerResult<Bitmap>?) -> Unit
     )
+
+    suspend fun getImage(
+        url: String,
+        callback: (Result<Bitmap>) -> Unit
+    )
 }

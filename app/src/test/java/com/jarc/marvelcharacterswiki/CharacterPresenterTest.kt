@@ -5,9 +5,9 @@ import com.nhaarman.mockitokotlin2.*
 import com.jarc.core.utils.AspectRatio
 import com.jarc.core.utils.CustomError
 import com.jarc.core.utils.LayerResult
-import com.jarc.domain.entities.CharacterEntity
-import com.jarc.domain.entities.Publishings
-import com.jarc.domain.entities.Thumbnail
+import com.jarc.domain.models.CharacterModel
+import com.jarc.domain.models.Publishings
+import com.jarc.domain.models.Thumbnail
 import com.jarc.domain.usecases.CharacterDetailUseCase
 import com.jarc.domain.usecases.CharactersUseCase
 import com.jarc.domain.usecases.ImagesUseCase
@@ -48,7 +48,7 @@ class CharacterPresenterTest {
 
         ).thenAnswer {
 
-            val callback = it.getArgument<((LayerResult<List<CharacterEntity>>?) -> Unit)>(0)
+            val callback = it.getArgument<((LayerResult<List<CharacterModel>>?) -> Unit)>(0)
             callback(LayerResult.Success(getCharacterEntityMockList()))
         }
 
@@ -67,7 +67,7 @@ class CharacterPresenterTest {
 
         ).thenAnswer {
 
-            val callback = it.getArgument<((LayerResult<List<CharacterEntity>>?) -> Unit)>(0)
+            val callback = it.getArgument<((LayerResult<List<CharacterModel>>?) -> Unit)>(0)
             callback(LayerResult.Error(
                 CustomError(Throwable("TestException"),
                     CustomError.OriginLayer.PRESENTATION_LAYER)
@@ -91,7 +91,7 @@ class CharacterPresenterTest {
 
         ).thenAnswer {
 
-            val callback = it.getArgument<((LayerResult<CharacterEntity>?) -> Unit)>(1)
+            val callback = it.getArgument<((LayerResult<CharacterModel>?) -> Unit)>(1)
             callback(LayerResult.Success(mock()))
         }
 
@@ -109,7 +109,7 @@ class CharacterPresenterTest {
 
         ).thenAnswer {
 
-            val callback = it.getArgument<((LayerResult<List<CharacterEntity>>?) -> Unit)>(1)
+            val callback = it.getArgument<((LayerResult<List<CharacterModel>>?) -> Unit)>(1)
             callback(LayerResult.Error(
                 CustomError(Throwable("TestException"),
                     CustomError.OriginLayer.PRESENTATION_LAYER)
@@ -169,13 +169,13 @@ class CharacterPresenterTest {
 
 
 
-    private fun getCharacterEntityMockList(): List<CharacterEntity>{
-        val list: MutableList<CharacterEntity> = mutableListOf()
+    private fun getCharacterEntityMockList(): List<CharacterModel>{
+        val list: MutableList<CharacterModel> = mutableListOf()
 
         for(i in 0..5){
 
             list.add(
-                CharacterEntity(
+                CharacterModel(
                     id = i.toLong(),
                     name = "",
                     description = "",

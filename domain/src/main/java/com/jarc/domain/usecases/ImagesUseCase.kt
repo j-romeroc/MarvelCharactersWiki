@@ -5,7 +5,7 @@ import com.jarc.core.utils.AspectRatio
 import com.jarc.core.utils.CustomError
 import com.jarc.core.utils.LayerResult
 import com.jarc.core.utils.Utils.getImageUrl
-import com.jarc.domain.entities.Thumbnail
+import com.jarc.domain.models.Thumbnail
 import com.jarc.domain.repositories.ImageRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -61,6 +61,30 @@ class ImagesUseCase(private val imageRepo: ImageRepo) {
                     callback(LayerResult.Error(ce))
                 }
 
+            }
+        }
+    }
+
+    fun executeCall(
+        imageInfo: Thumbnail,
+        origin: AspectRatio.Origin,
+        callback: (Result<Bitmap>) -> Unit
+    ) {
+
+        val url = getImageUrl(
+            path = imageInfo.path,
+            extension = imageInfo.extension,
+            size = AspectRatio.ImageSize.MEDIUM,
+            origin = origin
+        )
+
+        GlobalScope.launch(Dispatchers.Main) {
+
+            imageRepo.getImage(
+                url = url
+            ) { result ->
+
+                callback(result)
             }
         }
     }

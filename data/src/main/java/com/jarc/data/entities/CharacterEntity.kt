@@ -1,11 +1,10 @@
 package com.jarc.data.entities
 
 import com.jarc.core.utils.StoryType
-import com.jarc.domain.entities.*
+import com.jarc.domain.models.*
 
 
-
-data class CharacterData (
+data class CharacterEntity (
     val id: Long,
     val name: String,
     val description: String,
@@ -19,37 +18,53 @@ data class CharacterData (
     val urls: List<URL>
 ){
 
-    fun mapDataToEntity() =
-        CharacterEntity(
+    fun mapEntityToCharacterModel() =
+        CharacterModel(
             id = this.id,
             name = this.name,
             description = this.description,
             modified = this.modified,
-            thumbnail = com.jarc.domain.entities.Thumbnail(
+            thumbnail = com.jarc.domain.models.Thumbnail(
                 this.thumbnail.path,
                 this.thumbnail.extension),
             resourceURI = this.resourceURI,
-            comics = com.jarc.domain.entities.Publishings(
+            comics = Publishings(
                 available = this.comics.available,
                 collectionURI = this.comics.collectionURI,
                 items = this.comics.items.map {it.mapComicItemsToDomain()},
                 returned = this.comics.returned) ,
-            series = com.jarc.domain.entities.Publishings(
+            series = Publishings(
                 available = this.series.available,
                 collectionURI = this.series.collectionURI,
                 items = this.series.items.map {it.mapComicItemsToDomain()},
                 returned = this.series.returned),
-            stories = com.jarc.domain.entities.Publishings(
+            stories = Publishings(
                 available = this.stories.available,
                 collectionURI = this.stories.collectionURI,
                 items = this.stories.items.map {it.mapStoriesItemsToDomain()},
                 returned = this.stories.returned),
-            events = com.jarc.domain.entities.Publishings(
+            events = Publishings(
                 available = this.events.available,
                 collectionURI = this.events.collectionURI,
                 items = this.events.items.map { it.mapComicItemsToDomain() },
                 returned = this.events.returned),
             urls = this.urls.map {it.mapUrls()}
+        )
+
+    fun mapEntityToCharacterDetailModel() =
+        CharacterDetailModel(
+            id = this.id,
+            name = this.name,
+            description = this.description,
+            thumbnail = DetailThumbnail(
+                path = this.thumbnail.path,
+                extension = this.thumbnail.extension
+            ),
+            storiesCount = this.stories.available,
+            seriesCount = this.series.available,
+            comicsCount = this.comics.available,
+            eventsCount = this.events.available,
+            detailUrl = this.urls.find { it.type == "detail" }?.url ?: ""
         )
 
 }
@@ -95,7 +110,7 @@ data class URL (
 ){
 
     fun mapUrls() =
-        com.jarc.domain.entities.URL(type = this.type,
+        com.jarc.domain.models.URL(type = this.type,
             url = this.url)
 
 }

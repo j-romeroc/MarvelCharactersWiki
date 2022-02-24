@@ -2,7 +2,7 @@ package com.jarc.domain.usecases
 
 import com.jarc.core.utils.CustomError
 import com.jarc.core.utils.LayerResult
-import com.jarc.domain.entities.*
+import com.jarc.domain.models.*
 import com.jarc.domain.repositories.CharacterDetailRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class CharacterDetailUseCase(private val characterDetailRepo: CharacterDetailRepo) {
 
-    fun execute(characterId: String, callback: (LayerResult<CharacterEntity>?) -> Unit) {
+    fun execute(characterId: String, callback: (LayerResult<CharacterModel>?) -> Unit) {
 
         GlobalScope.launch(Dispatchers.Main) {
 
@@ -47,6 +47,17 @@ class CharacterDetailUseCase(private val characterDetailRepo: CharacterDetailRep
                     callback(LayerResult.Error(ce))
                 }
 
+            }
+        }
+    }
+
+    fun executeCall(characterId: String, callback: (Result<CharacterDetailModel>) -> Unit) {
+
+        GlobalScope.launch(Dispatchers.Main) {
+
+            characterDetailRepo.getCharacterDetail(characterId) { result ->
+
+                callback(result)
             }
         }
     }

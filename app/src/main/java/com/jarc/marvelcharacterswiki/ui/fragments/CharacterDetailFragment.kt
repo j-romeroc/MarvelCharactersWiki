@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.jarc.core.utils.AspectRatio
 import com.jarc.core.utils.LayerResult
+import com.jarc.domain.models.CharacterDetailModel
+import com.jarc.domain.models.Thumbnail
 import com.jarc.marvelcharacterswiki.R
 import com.jarc.marvelcharacterswiki.databinding.FragmentCharacterDetailBinding
-import com.jarc.marvelcharacterswiki.models.CharacterDetailModel
-import com.jarc.marvelcharacterswiki.models.Thumbnail
 import com.jarc.marvelcharacterswiki.ui.presenters.CharacterPresenter
 import com.jarc.marvelcharacterswiki.ui.utils.ViewUtils
 import org.koin.java.KoinJavaComponent.inject
