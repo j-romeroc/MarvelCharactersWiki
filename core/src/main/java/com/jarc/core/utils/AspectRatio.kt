@@ -1,7 +1,7 @@
 package com.jarc.core.utils
 
 
-abstract class AspectRatio() {
+abstract class AspectRatio {
 
     enum class ImageSize {
         SMALL,

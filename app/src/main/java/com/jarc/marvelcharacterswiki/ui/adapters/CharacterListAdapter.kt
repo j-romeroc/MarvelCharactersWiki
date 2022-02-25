@@ -31,7 +31,7 @@ class CharacterListAdapter(private val viewModel: CharacterViewModel) :
         holder.itemView.character_id.text = characters[position].id.toString()
         holder.itemView.character_name.text = characters[position].name
 
-        viewModel.getImage(characters[position].thumbnail, AspectRatio.Origin.LIST) { result ->
+        viewModel.getImageForList(characters[position].thumbnail, AspectRatio.Origin.LIST) { result ->
 
             val context = holder.itemView.context
 

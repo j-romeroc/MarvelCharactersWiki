@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jarc.core.utils.AspectRatio
-import com.jarc.core.utils.LayerResult
 import com.jarc.domain.models.CharacterDetailModel
 import com.jarc.domain.models.CharacterModel
 import com.jarc.domain.models.Thumbnail
@@ -20,12 +19,12 @@ class CharacterViewModel(
 
     val characterListLiveData: MutableLiveData<List<CharacterModel>> = MutableLiveData()
     val characterDetailLiveData: MutableLiveData<CharacterDetailModel> = MutableLiveData()
-    val imageBitmap: MutableLiveData<Bitmap> = MutableLiveData()
-    val fetchListError: MutableLiveData<Throwable> = MutableLiveData()
-    val fetchDetailError: MutableLiveData<Throwable> = MutableLiveData()
-    val fetchImageError: MutableLiveData<Throwable> = MutableLiveData()
+    val imageBitmapLiveData: MutableLiveData<Bitmap> = MutableLiveData()
+    val getListError: MutableLiveData<Throwable> = MutableLiveData()
+    val getDetailError: MutableLiveData<Throwable> = MutableLiveData()
+    val getImageError: MutableLiveData<Throwable> = MutableLiveData()
 
-    fun fetchCharacterList() {
+    fun getCharacterList() {
         characterUseCase.executeCall { listResult ->
 
             listResult.onSuccess { characterList ->
@@ -35,7 +34,7 @@ class CharacterViewModel(
 
             listResult.onFailure { error ->
 
-                fetchListError.postValue(error)
+                getListError.postValue(error)
             }
         }
     }
@@ -50,13 +49,26 @@ class CharacterViewModel(
 
             result.onFailure { error ->
 
-                fetchDetailError.postValue(error)
+                getDetailError.postValue(error)
             }
 
         }
     }
 
-    fun getImage(
+    fun getImageDetail(imageInfo: Thumbnail,
+                       origin: AspectRatio.Origin) {
+        imagesUseCase.executeCall(
+            Thumbnail(
+                imageInfo.path,
+                imageInfo.extension
+            ), origin
+        ) { result ->
+            result.onSuccess { imageBitmapLiveData.postValue(it) }
+            result.onFailure { getImageError.postValue(it) }
+        }
+    }
+
+    fun getImageForList(
         imageInfo: Thumbnail,
         origin: AspectRatio.Origin,
         callback: (Result<Bitmap>) -> Unit
@@ -71,6 +83,5 @@ class CharacterViewModel(
             callback(result)
         }
     }
-
 
 }

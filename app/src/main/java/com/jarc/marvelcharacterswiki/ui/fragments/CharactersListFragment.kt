@@ -2,26 +2,20 @@ package com.jarc.marvelcharacterswiki.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jarc.core.utils.CustomError
-import com.jarc.core.utils.LayerResult
 import com.jarc.domain.models.CharacterModel
-import com.jarc.marvelcharacterswiki.R
 import com.jarc.marvelcharacterswiki.databinding.FragmentCharactersListBinding
 import com.jarc.marvelcharacterswiki.ui.adapters.CharacterListAdapter
-import com.jarc.marvelcharacterswiki.models.CharacterModel
-import com.jarc.marvelcharacterswiki.ui.presenters.CharacterPresenterImpl
 import com.jarc.marvelcharacterswiki.ui.utils.ViewUtils
-import com.jarc.marvelcharacterswiki.ui.presenters.CharacterPresenter
 import com.jarc.marvelcharacterswiki.ui.viewmodels.CharacterViewModel
 import kotlinx.android.synthetic.main.fragment_characters_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.java.KoinJavaComponent.inject
 
 class CharactersListFragment : Fragment() {
 
@@ -45,19 +39,32 @@ class CharactersListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupObservers()
         setupRecyclerView()
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if (adapter.characters.isNullOrEmpty())
-            askForData()
+        if (adapter.characters.isNullOrEmpty()) {
+            viewModel.getCharacterList()
+        }
+    }
+
+    private fun setupObservers() {
+        viewModel.characterListLiveData.observe(viewLifecycleOwner) {
+            renderView(it)
+        }
+
+        viewModel.getListError.observe(viewLifecycleOwner) {
+            renderError(it as CustomError)
+        }
     }
 
 
     private fun setupRecyclerView() {
+
+        progressBar?.visibility = View.VISIBLE
 
         binding.rvCharacters.apply {
 
@@ -70,7 +77,7 @@ class CharactersListFragment : Fragment() {
             this.addOnScrollListener(object :
                 CharactersListScrollListener(this.layoutManager as LinearLayoutManager) {
                 override fun loadMoreItems() {
-                    askForData()
+                    viewModel.getCharacterList()
                 }
 
                 override fun isLastPage() = false
@@ -84,7 +91,7 @@ class CharactersListFragment : Fragment() {
     }
 
 
-    private fun askForData() {
+/*    private fun askForData() {
         progressBar?.visibility = View.VISIBLE
 
         presenter.fetchCharacterList { result ->
@@ -104,13 +111,15 @@ class CharactersListFragment : Fragment() {
                 }
             }
         }
-    }
+    }*/
 
     private fun renderView(characters: List<CharacterModel>) {
+        progressBar?.visibility = View.VISIBLE
+
         val lastPosition = if (adapter.characters.isNullOrEmpty()) 0 else adapter.characters.size
         adapter.characters.addAll(characters)
 
-        Log.d("Fragment List", "CharacterslistReceived")
+        Log.d("FragmentList", "CharacterslistReceived")
 
         adapter.notifyItemRangeInserted(lastPosition, characters.size)
 
@@ -125,10 +134,10 @@ class CharactersListFragment : Fragment() {
                 "Error: <$errorDescription> \nThrown in $errorOriginLayer \nShould retry?",
                 it
             ) {
-                askForData()
+                viewModel.getCharacterList()
             }
         }
-        Log.d("Fragment List", "Error: ${errorInfo.localizedMessage}")
+        Log.d("FragmentList", "Error: ${errorInfo.localizedMessage}")
     }
 
 
