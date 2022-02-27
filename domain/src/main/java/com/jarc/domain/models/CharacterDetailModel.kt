@@ -9,9 +9,10 @@ data class CharacterDetailModel(
     val comicsCount: Long,
     val seriesCount: Long,
     val eventsCount: Long,
-    val detailUrl: String)
+    val detailUrl: String
+)
 
-data class DetailThumbnail (
+data class DetailThumbnail(
     val path: String,
     val extension: String
 )

@@ -18,7 +18,7 @@ import org.junit.Test
 
 class CharactersDetailUseCaseTest {
 
-    private lateinit var useCase : CharacterDetailUseCase
+    private lateinit var useCase: CharacterDetailUseCase
     private lateinit var repo: CharacterDetailRepo
 
 
@@ -27,50 +27,52 @@ class CharactersDetailUseCaseTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     @Before
-    fun setup(){
-
+    fun setup() {
         repo = mock()
         useCase = CharacterDetailUseCase(repo)
     }
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `should succeed calling Usecase and get LayerResult-Success`() {
+    fun `should call UseCase and get Result isSuccess`() {
 
         whenever(
 
-                runBlocking { repo.fetchCharacterDetail(eq("someId"), any()) }
+            runBlocking { repo.getCharacterDetail(eq("someId"), any()) }
 
         ).thenAnswer {
 
-            val callback = it.getArgument<((LayerResult<List<CharacterModel>>) -> Unit)>(1)
-            callback(LayerResult.Success(mock()))
+            val callback = it.getArgument<((Result<List<CharacterModel>>) -> Unit)>(1)
+            callback(Result.success(mock()))
         }
 
-        useCase.execute("someId") { result ->
-            assert(result is LayerResult.Success)
+        useCase.executeCall("someId") { result ->
+            assert(result.isSuccess)
         }
     }
 
 
     @Test
-    fun `should fail calling usecase and get LayerResult-Error`(){
+    fun `should call UseCase and get Result isFailure`() {
 
         whenever(
 
-                runBlocking { repo.fetchCharacterDetail(eq("someId"), any()) }
+            runBlocking { repo.getCharacterDetail(eq("someId"), any()) }
 
         ).thenAnswer {
-            val callback = it.getArgument<((LayerResult<List<CharacterModel>>) -> Unit)>(1)
+            val callback = it.getArgument<((Result<List<CharacterModel>>) -> Unit)>(1)
             callback(
-                    LayerResult.Error(
-                            CustomError(Throwable("TestException"),
-                                    CustomError.OriginLayer.DATA_LAYER)
-                    ))
+                (Result.failure(
+                    CustomError(
+                        originLayer = CustomError.OriginLayer.DOMAIN_LAYER,
+                        underLyingError = Throwable("TestException")
+                    )
+                ))
+            )
         }
 
-        useCase.execute("someId") { result ->
-            assert(result is LayerResult.Error)
+        useCase.executeCall("someId") { result ->
+            assert(result.isFailure)
         }
     }
 }

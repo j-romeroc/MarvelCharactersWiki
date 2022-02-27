@@ -2,7 +2,7 @@ package com.jarc.data.entities
 
 data class CharactersRawResponse(
     val data: ResultsRawResponse
-){
+) {
     fun mapToEntity() = this.data.results
 }
 

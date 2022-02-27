@@ -1,7 +1,6 @@
 package com.jarc.marvelcharacterswiki.ui.adapters
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,9 +10,9 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.jarc.domain.models.CharacterModel
 import com.jarc.marvelcharacterswiki.R
-import com.jarc.marvelcharacterswiki.ui.models.CharacterImage
 import com.jarc.marvelcharacterswiki.databinding.CharacterItemBinding
 import com.jarc.marvelcharacterswiki.ui.fragments.CharactersListFragmentDirections
+import com.jarc.marvelcharacterswiki.ui.models.CharacterImage
 
 class CharacterListViewHolder(
     private val binding: CharacterItemBinding,

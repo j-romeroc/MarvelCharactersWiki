@@ -4,6 +4,8 @@ import com.jarc.domain.models.Thumbnail
 
 interface CharacterImageListener {
 
-    fun getCharacterImage(imageInfo: Thumbnail,
-                          position: Int)
+    fun getCharacterImage(
+        imageInfo: Thumbnail,
+        position: Int
+    )
 }

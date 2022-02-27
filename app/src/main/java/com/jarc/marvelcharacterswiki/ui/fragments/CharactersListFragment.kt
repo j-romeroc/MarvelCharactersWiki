@@ -65,7 +65,7 @@ class CharactersListFragment : Fragment(), CharacterImageListener {
 
     private fun setupRecyclerView() {
 
-       progressBar?.visibility = View.VISIBLE
+        progressBar?.visibility = View.VISIBLE
 
         binding.rvCharacters.apply {
 

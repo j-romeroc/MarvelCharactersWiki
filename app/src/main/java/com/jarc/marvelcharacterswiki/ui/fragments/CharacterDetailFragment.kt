@@ -44,22 +44,6 @@ class CharacterDetailFragment : Fragment() {
         if (characterId != null) {
 
             viewModel.getCharacterDetail(characterId)
-
-            /*
-                presenter.fetchCharacterDetail(characterId) { result ->
-
-                    activity?.runOnUiThread {
-
-                        when (result) {
-                            is LayerResult.Success -> {
-                                result.value?.let { renderView(it) }
-                            }
-                            is LayerResult.Error -> {
-                                renderError(result.error)
-                            }
-                        }
-                    }
-                }*/
         }
     }
 

@@ -62,44 +62,6 @@ class CharacterService {
 
     }
 
-
-    suspend fun fetchCharactersList(
-        offsetFactor: Int,
-        callback: (LayerResult<CharactersRawResponse>) -> Unit
-    ) {
-
-
-        val timeStampPlusHash = getTimeStampPlusHash()
-
-
-        withContext(Dispatchers.IO) {
-
-
-            try {
-                val result = restEndpoints.getCharactersAsync(
-                    offset = offsetFactor.getOffset(),
-                    hash = timeStampPlusHash[HASH] ?: "",
-                    ts = timeStampPlusHash[TIMESTAMP].toString()
-                ).await()
-
-                callback(LayerResult.Success(result))
-
-            } catch (e: Throwable) {
-
-                callback(
-                    LayerResult.Error(
-                        CustomError(
-                            originLayer = CustomError.OriginLayer.DATA_LAYER,
-                            underLyingError = e
-                        )
-                    )
-                )
-            }
-
-        }
-
-    }
-
     suspend fun getCharacterDetail(
         characterId: String,
         callback: (Result<CharactersRawResponse>) -> Unit
@@ -134,38 +96,5 @@ class CharacterService {
 
     }
 
-    suspend fun fetchCharacterDetail(
-        characterId: String,
-        callback: (LayerResult<CharactersRawResponse>?) -> Unit
-    ) {
-
-        val timeStampPlusHash = getTimeStampPlusHash()
-
-        withContext(Dispatchers.IO) {
-
-            try {
-                val result = restEndpoints.getCharacterDetailAsync(
-                    hash = timeStampPlusHash[HASH] ?: "",
-                    ts = timeStampPlusHash[TIMESTAMP].toString(),
-                    character = characterId
-                ).await()
-
-                callback(LayerResult.Success(result))
-
-            } catch (e: Throwable) {
-
-                callback(
-                    LayerResult.Error(
-                        CustomError(
-                            originLayer = CustomError.OriginLayer.DATA_LAYER,
-                            underLyingError = e
-                        )
-                    )
-                )
-            }
-
-        }
-
-    }
 }
 
