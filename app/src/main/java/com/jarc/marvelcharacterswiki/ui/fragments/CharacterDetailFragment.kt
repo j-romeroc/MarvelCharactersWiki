@@ -72,7 +72,7 @@ class CharacterDetailFragment : Fragment() {
             renderError(it as CustomError)
         }
 
-        viewModel.imageBitmapLiveData.observe(viewLifecycleOwner) {
+        viewModel.detailImageLiveData.observe(viewLifecycleOwner) {
             renderCharacterImage(it)
         }
 

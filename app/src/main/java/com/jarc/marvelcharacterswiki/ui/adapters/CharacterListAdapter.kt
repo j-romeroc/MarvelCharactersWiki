@@ -1,33 +1,35 @@
 package com.jarc.marvelcharacterswiki.ui.adapters
 
 import android.graphics.BitmapFactory
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import com.jarc.core.utils.AspectRatio
 import com.jarc.domain.models.CharacterModel
 import com.jarc.marvelcharacterswiki.R
-import com.jarc.marvelcharacterswiki.ui.fragments.CharactersListFragmentDirections
-import com.jarc.marvelcharacterswiki.ui.viewmodels.CharacterViewModel
-import kotlinx.android.synthetic.main.character_item.view.*
+import com.jarc.marvelcharacterswiki.ui.models.CharacterImage
+import com.jarc.marvelcharacterswiki.ui.fragments.CharacterImageListener
 
 
-class CharacterListAdapter(private val viewModel: CharacterViewModel) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CharacterListAdapter(
+    private val listener: CharacterImageListener,
+    private val characterImageLiveData: LiveData<CharacterImage>
+) :
+    RecyclerView.Adapter<CharacterListViewHolder>() {
 
     var characters: MutableList<CharacterModel> = mutableListOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return CharactersListsViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.character_item, parent, false)
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterListViewHolder {
 
+        parent.findViewTreeLifecycleOwner()
+
+        return CharacterListViewHolder.create(parent, characterImageLiveData, parent.context)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CharacterListViewHolder, position: Int) {
+        holder.bind(characters[position], position)
+        listener.getCharacterImage(characters[position].thumbnail, position)
+/*
         holder.itemView.character_id.text = characters[position].id.toString()
         holder.itemView.character_name.text = characters[position].name
 
@@ -53,14 +55,17 @@ class CharacterListAdapter(private val viewModel: CharacterViewModel) :
 
             holder.itemView.findNavController().navigate(action)
         }
+*/
 
     }
+
 
     override fun getItemCount(): Int {
         return characters.count()
     }
 
-    internal inner class CharactersListsViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView)
+
+    /*   internal inner class CharactersListsViewHolder(itemView: View) :
+           RecyclerView.ViewHolder(itemView)*/
 
 }

@@ -1,7 +1,6 @@
 package com.jarc.data
 
 import com.jarc.core.utils.CustomError
-import com.jarc.core.utils.LayerResult
 import com.jarc.data.services.CharacterService
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -11,50 +10,43 @@ import retrofit2.HttpException
 class CharactersServiceUnitTest {
 
 
-    private lateinit var service : CharacterService
+    private lateinit var service: CharacterService
 
     @Before
-    fun setup(){
+    fun setup() {
         service = CharacterService()
 
     }
 
+
     @Test
-    fun `should call for characters List and get a response in form of LayerResult`(){
+    fun `should fetch character detail with incorrect id and get a 404 httpException code`() {
         runBlocking {
-            service.fetchCharactersList(1){ data ->
-                assert(data is LayerResult)
+            service.getCharacterDetail("2") { result ->
+
+                result.onSuccess {
+                    assert(false)
+                }
+
+                result.onFailure {
+                    val httpException = (it as CustomError).getUnderlyingError() as HttpException
+                    assert(httpException.code() == 404)
+                }
             }
         }
     }
 
+
     @Test
-    fun `should call for character detail and get a response in form of LayerResult`(){
+    fun `should fetch character detail with a valid id and get Result isSuccess`() {
         runBlocking {
-            service.fetchCharacterDetail(1.toString()){ data ->
-                assert(data is LayerResult)
+            service.getCharacterDetail("1017100") { result ->
+
+                assert(result.isSuccess)
+
             }
         }
     }
 
-    @Test
-    fun `should call for character detail with inexistent id and get an httpException code 404`(){
-        runBlocking {
-            service.fetchCharacterDetail("2"){ data ->
-                val customError = (data as LayerResult.Error).error
-                val httpException = (customError as CustomError).getUnderlyingError() as HttpException
-                assert(httpException.code() == 404)
-            }
-        }
-    }
-
-    @Test
-    fun `should call for character detail with valid id and get success response`(){
-        runBlocking {
-            service.fetchCharacterDetail("1017100"){ data ->
-                assert(data is LayerResult.Success)
-            }
-        }
-    }
 
 }

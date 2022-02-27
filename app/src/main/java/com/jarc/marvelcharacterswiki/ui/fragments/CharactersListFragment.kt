@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jarc.core.utils.CustomError
 import com.jarc.domain.models.CharacterModel
+import com.jarc.domain.models.Thumbnail
 import com.jarc.marvelcharacterswiki.databinding.FragmentCharactersListBinding
 import com.jarc.marvelcharacterswiki.ui.adapters.CharacterListAdapter
 import com.jarc.marvelcharacterswiki.ui.utils.ViewUtils
@@ -17,12 +18,11 @@ import com.jarc.marvelcharacterswiki.ui.viewmodels.CharacterViewModel
 import kotlinx.android.synthetic.main.fragment_characters_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CharactersListFragment : Fragment() {
+class CharactersListFragment : Fragment(), CharacterImageListener {
 
     private val viewModel by viewModel<CharacterViewModel>()
 
-    private var adapter: CharacterListAdapter =
-        CharacterListAdapter(viewModel)
+    private lateinit var adapter: CharacterListAdapter
 
     private lateinit var binding: FragmentCharactersListBinding
 
@@ -31,6 +31,7 @@ class CharactersListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        adapter = CharacterListAdapter(this, viewModel.listImageLiveData)
         binding = FragmentCharactersListBinding.inflate(inflater)
         binding.lifecycleOwner = this
         return binding.root
@@ -64,7 +65,7 @@ class CharactersListFragment : Fragment() {
 
     private fun setupRecyclerView() {
 
-        progressBar?.visibility = View.VISIBLE
+       progressBar?.visibility = View.VISIBLE
 
         binding.rvCharacters.apply {
 
@@ -114,7 +115,7 @@ class CharactersListFragment : Fragment() {
     }*/
 
     private fun renderView(characters: List<CharacterModel>) {
-        progressBar?.visibility = View.VISIBLE
+        progressBar?.visibility = View.GONE
 
         val lastPosition = if (adapter.characters.isNullOrEmpty()) 0 else adapter.characters.size
         adapter.characters.addAll(characters)
@@ -138,6 +139,13 @@ class CharactersListFragment : Fragment() {
             }
         }
         Log.d("FragmentList", "Error: ${errorInfo.localizedMessage}")
+    }
+
+    override fun getCharacterImage(
+        imageInfo: Thumbnail,
+        position: Int
+    ) {
+        viewModel.getImageForList(imageInfo, position)
     }
 
 

@@ -1,6 +1,8 @@
 package com.jarc.marvelcharacterswiki.ui.viewmodels
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jarc.core.utils.AspectRatio
@@ -10,6 +12,8 @@ import com.jarc.domain.models.Thumbnail
 import com.jarc.domain.usecases.CharacterDetailUseCase
 import com.jarc.domain.usecases.CharactersUseCase
 import com.jarc.domain.usecases.ImagesUseCase
+import com.jarc.marvelcharacterswiki.ui.models.CharacterImage
+import com.jarc.marvelcharacterswiki.R
 
 class CharacterViewModel(
     private val characterUseCase: CharactersUseCase,
@@ -19,10 +23,11 @@ class CharacterViewModel(
 
     val characterListLiveData: MutableLiveData<List<CharacterModel>> = MutableLiveData()
     val characterDetailLiveData: MutableLiveData<CharacterDetailModel> = MutableLiveData()
-    val imageBitmapLiveData: MutableLiveData<Bitmap> = MutableLiveData()
+    val detailImageLiveData: MutableLiveData<Bitmap> = MutableLiveData()
     val getListError: MutableLiveData<Throwable> = MutableLiveData()
     val getDetailError: MutableLiveData<Throwable> = MutableLiveData()
     val getImageError: MutableLiveData<Throwable> = MutableLiveData()
+    val listImageLiveData: MutableLiveData<CharacterImage> = MutableLiveData()
 
     fun getCharacterList() {
         characterUseCase.executeCall { listResult ->
@@ -55,23 +60,9 @@ class CharacterViewModel(
         }
     }
 
-    fun getImageDetail(imageInfo: Thumbnail,
-                       origin: AspectRatio.Origin) {
-        imagesUseCase.executeCall(
-            Thumbnail(
-                imageInfo.path,
-                imageInfo.extension
-            ), origin
-        ) { result ->
-            result.onSuccess { imageBitmapLiveData.postValue(it) }
-            result.onFailure { getImageError.postValue(it) }
-        }
-    }
-
-    fun getImageForList(
+    fun getImageDetail(
         imageInfo: Thumbnail,
-        origin: AspectRatio.Origin,
-        callback: (Result<Bitmap>) -> Unit
+        origin: AspectRatio.Origin
     ) {
         imagesUseCase.executeCall(
             Thumbnail(
@@ -79,8 +70,39 @@ class CharacterViewModel(
                 imageInfo.extension
             ), origin
         ) { result ->
+            result.onSuccess { detailImageLiveData.postValue(it) }
+            result.onFailure { getImageError.postValue(it) }
+        }
+    }
 
-            callback(result)
+    fun getImageForList(
+        imageInfo: Thumbnail,
+        position: Int
+    ) {
+        imagesUseCase.executeCall(
+            Thumbnail(
+                imageInfo.path,
+                imageInfo.extension
+            ), AspectRatio.Origin.LIST
+        ) { result ->
+
+            result.onSuccess {
+                listImageLiveData.postValue(
+                    CharacterImage(
+                        image = it,
+                        position = position
+                    )
+                )
+            }
+
+            result.onFailure {
+                listImageLiveData.postValue(
+                    CharacterImage(
+                        image = null,
+                        position = position
+                    )
+                )
+            }
         }
     }
 
