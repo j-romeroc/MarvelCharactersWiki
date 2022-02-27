@@ -8,5 +8,5 @@ import retrofit2.http.Url
 interface ImagesEndpoint {
 
     @GET
-    fun getImage(@Url url: String): Deferred<ResponseBody>
+    fun getImageAsync(@Url url: String): Deferred<ResponseBody>
 }

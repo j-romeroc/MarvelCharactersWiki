@@ -1,9 +1,11 @@
 package com.jarc.domain.repositories
 
-import com.jarc.core.utils.LayerResult
-import com.jarc.domain.entities.CharacterEntity
+import com.jarc.domain.models.CharacterDetailModel
 
 interface CharacterDetailRepo {
 
-    suspend fun fetchCharacterDetail(characterId: String, callback: (LayerResult<CharacterEntity>?) -> Unit)
+    suspend fun getCharacterDetail(
+        characterId: String,
+        callback: (Result<CharacterDetailModel>) -> Unit
+    )
 }

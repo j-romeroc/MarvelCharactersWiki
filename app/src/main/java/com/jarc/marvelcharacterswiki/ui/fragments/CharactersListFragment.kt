@@ -1,59 +1,73 @@
-
 package com.jarc.marvelcharacterswiki.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jarc.core.utils.CustomError
-import com.jarc.core.utils.LayerResult
-import com.jarc.marvelcharacterswiki.R
+import com.jarc.domain.models.CharacterModel
+import com.jarc.domain.models.Thumbnail
+import com.jarc.marvelcharacterswiki.databinding.FragmentCharactersListBinding
 import com.jarc.marvelcharacterswiki.ui.adapters.CharacterListAdapter
-import com.jarc.marvelcharacterswiki.models.CharacterModel
-import com.jarc.marvelcharacterswiki.ui.presenters.CharacterPresenterImpl
 import com.jarc.marvelcharacterswiki.ui.utils.ViewUtils
-import com.jarc.marvelcharacterswiki.ui.presenters.CharacterPresenter
+import com.jarc.marvelcharacterswiki.ui.viewmodels.CharacterViewModel
 import kotlinx.android.synthetic.main.fragment_characters_list.*
-import org.koin.java.KoinJavaComponent.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CharactersListFragment : Fragment() {
+class CharactersListFragment : Fragment(), CharacterImageListener {
 
+    private val viewModel by viewModel<CharacterViewModel>()
 
-    private val presenter: CharacterPresenter by inject(CharacterPresenter::class.java)
-    private var adapter: CharacterListAdapter = CharacterListAdapter(presenter as CharacterPresenterImpl)
+    private lateinit var adapter: CharacterListAdapter
 
+    private lateinit var binding: FragmentCharactersListBinding
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        return inflater.inflate(R.layout.fragment_characters_list, container, false)
+    ): View {
+        adapter = CharacterListAdapter(this, viewModel.listImageLiveData)
+        binding = FragmentCharactersListBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupObservers()
         setupRecyclerView()
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if(adapter.characters.isNullOrEmpty())
-            askForData()
+        if (adapter.characters.isNullOrEmpty()) {
+            viewModel.getCharacterList()
+        }
+    }
+
+    private fun setupObservers() {
+        viewModel.characterListLiveData.observe(viewLifecycleOwner) {
+            renderView(it)
+        }
+
+        viewModel.getListError.observe(viewLifecycleOwner) {
+            renderError(it as CustomError)
+        }
     }
 
 
     private fun setupRecyclerView() {
 
-        characters_recyclerview.apply {
+        progressBar?.visibility = View.VISIBLE
+
+        binding.rvCharacters.apply {
 
             this.layoutManager = activity?.let { fa ->
                 LinearLayoutManager(
@@ -61,9 +75,10 @@ class CharactersListFragment : Fragment() {
                 )
             }
 
-            this.addOnScrollListener(object : CharactersListScrollListener(this.layoutManager as LinearLayoutManager) {
+            this.addOnScrollListener(object :
+                CharactersListScrollListener(this.layoutManager as LinearLayoutManager) {
                 override fun loadMoreItems() {
-                    askForData()
+                    viewModel.getCharacterList()
                 }
 
                 override fun isLastPage() = false
@@ -73,20 +88,20 @@ class CharactersListFragment : Fragment() {
             })
         }
 
-        characters_recyclerview.adapter = adapter
+        binding.rvCharacters.adapter = adapter
     }
 
 
-    private fun askForData(){
+/*    private fun askForData() {
         progressBar?.visibility = View.VISIBLE
 
         presenter.fetchCharacterList { result ->
 
-            activity?.runOnUiThread{
+            activity?.runOnUiThread {
 
                 progressBar?.visibility = View.GONE
 
-                when(result) {
+                when (result) {
 
                     is LayerResult.Success -> {
                         result.value?.let { renderView(it) }
@@ -97,16 +112,17 @@ class CharactersListFragment : Fragment() {
                 }
             }
         }
-    }
+    }*/
 
     private fun renderView(characters: List<CharacterModel>) {
-        val lastPosition = if(adapter.characters.isNullOrEmpty()) 0 else adapter.characters.size
+        progressBar?.visibility = View.GONE
+
+        val lastPosition = if (adapter.characters.isNullOrEmpty()) 0 else adapter.characters.size
         adapter.characters.addAll(characters)
 
+        Log.d("FragmentList", "CharacterslistReceived")
 
-        Log.d("Fragment List", "CharacterslistReceived")
-
-        adapter.notifyItemRangeInserted(lastPosition,characters.size)
+        adapter.notifyItemRangeInserted(lastPosition, characters.size)
 
     }
 
@@ -115,18 +131,28 @@ class CharactersListFragment : Fragment() {
         val errorOriginLayer = errorInfo.getErrorOriginLayerMsg()
         val errorDescription = errorInfo.getErrorDetailedMsg()
         activity?.let {
-            ViewUtils.onDialog("Error: <$errorDescription> \nThrown in $errorOriginLayer \nShould retry?",
-                it){
-                askForData()
+            ViewUtils.onDialog(
+                "Error: <$errorDescription> \nThrown in $errorOriginLayer \nShould retry?",
+                it
+            ) {
+                viewModel.getCharacterList()
             }
         }
-        Log.d("Fragment List", "Error: ${errorInfo.localizedMessage}")
+        Log.d("FragmentList", "Error: ${errorInfo.localizedMessage}")
+    }
+
+    override fun getCharacterImage(
+        imageInfo: Thumbnail,
+        position: Int
+    ) {
+        viewModel.getImageForList(imageInfo, position)
     }
 
 
 }
 
-private abstract class CharactersListScrollListener(val layoutManager: LinearLayoutManager) : RecyclerView.OnScrollListener() {
+private abstract class CharactersListScrollListener(val layoutManager: LinearLayoutManager) :
+    RecyclerView.OnScrollListener() {
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
@@ -140,7 +166,8 @@ private abstract class CharactersListScrollListener(val layoutManager: LinearLay
         if (!isLoading() && !isLastPage()) {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
                 && firstVisibleItemPosition >= 0
-                && totalItemCount >= PAGE_SIZE) {
+                && totalItemCount >= PAGE_SIZE
+            ) {
                 loadMoreItems()
             }
         }

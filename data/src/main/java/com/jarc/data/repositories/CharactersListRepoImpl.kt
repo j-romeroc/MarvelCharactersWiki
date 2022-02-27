@@ -2,37 +2,36 @@ package com.jarc.data.repositories
 
 
 import com.jarc.core.utils.CustomError
-import com.jarc.core.utils.LayerResult
-import com.jarc.data.entities.CharactersRawResponse
 import com.jarc.data.services.CharacterService
-import com.jarc.domain.entities.CharacterEntity
+import com.jarc.domain.models.CharacterModel
 import com.jarc.domain.repositories.CharactersListRepo
 
-class CharactersListRepoImpl(private val service: CharacterService): CharactersListRepo {
+class CharactersListRepoImpl(private val service: CharacterService) : CharactersListRepo {
 
-    override suspend fun fetchCharactersList(
+    override suspend fun getCharactersList(
         offsetFactor: Int,
-        callback: (LayerResult<List<CharacterEntity>>?) -> Unit) {
+        callback: (Result<List<CharacterModel>>) -> Unit
+    ) {
 
-        service.fetchCharactersList(offsetFactor) { result: LayerResult<CharactersRawResponse> ->
+        service.getCharactersList(offsetFactor) { result ->
 
-            try{
-                when (result) {
-                    is LayerResult.Success -> {
+            result.onSuccess { rawResponse ->
+                callback(
+                    Result.success(
+                        rawResponse.mapToEntity().map { it.mapEntityToCharacterModel() })
+                )
+            }
 
-                        val characters = result.value?.mapToData()?.map { it.mapDataToEntity() }
-
-                        callback(LayerResult.Success(characters))
-                    }
-                    is LayerResult.Error -> {
-
-                        throw CustomError(originLayer = CustomError.OriginLayer.DATA_LAYER,
-                            underLyingError = (result.error as CustomError).getUnderlyingError())
-                    }
-                }
-            }catch (e: Throwable){
-
-                callback(LayerResult.Error(e))
+            result.onFailure {
+                it as CustomError
+                callback(
+                    Result.failure(
+                        CustomError(
+                            originLayer = CustomError.OriginLayer.DATA_LAYER,
+                            underLyingError = it.getUnderlyingError()
+                        )
+                    )
+                )
             }
         }
 

@@ -3,7 +3,7 @@ package com.jarc.domain
 import com.nhaarman.mockitokotlin2.*
 import com.jarc.core.utils.CustomError
 import com.jarc.core.utils.LayerResult
-import com.jarc.domain.entities.CharacterEntity
+import com.jarc.domain.models.CharacterModel
 import com.jarc.domain.repositories.CharactersListRepo
 import com.jarc.domain.usecases.CharactersUseCase
 import com.jarc.domain.utils.MainCoroutineRule
@@ -14,10 +14,9 @@ import org.junit.Rule
 import org.junit.Test
 
 
-
 class CharactersUseCaseTest {
 
-    private lateinit var useCase : CharactersUseCase
+    private lateinit var useCase: CharactersUseCase
     private lateinit var repo: CharactersListRepo
 
 
@@ -26,50 +25,52 @@ class CharactersUseCaseTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     @Before
-    fun setup(){
-
+    fun setup() {
         repo = mock()
         useCase = CharactersUseCase(repo)
     }
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `should succeed calling Usecase and get LayerResult-Success`() {
+    fun `should call UseCase and get Result isSuccess`() {
 
         whenever(
 
-                runBlocking { repo.fetchCharactersList(eq(1), any()) }
+            runBlocking { repo.getCharactersList(eq(1), any()) }
 
         ).thenAnswer {
 
-            val callback = it.getArgument<((LayerResult<List<CharacterEntity>>) -> Unit)>(1)
-            callback(LayerResult.Success(mock()))
+            val callback = it.getArgument<((Result<List<CharacterModel>>) -> Unit)>(1)
+            callback(Result.success(mock()))
         }
 
-        useCase.execute { result ->
-            assert(result is LayerResult.Success)
+        useCase.executeCall { result ->
+            assert(result.isSuccess)
         }
     }
 
 
     @Test
-    fun `should fail calling usecase and get LayerResult-Error`(){
+    fun `should call UseCase and get Result isFailure`() {
 
         whenever(
 
-                runBlocking { repo.fetchCharactersList(eq(1), any()) }
+            runBlocking { repo.getCharactersList(eq(1), any()) }
 
         ).thenAnswer {
-            val callback = it.getArgument<((LayerResult<List<CharacterEntity>>) -> Unit)>(1)
+            val callback = it.getArgument<((Result<List<CharacterModel>>) -> Unit)>(1)
             callback(
-                    LayerResult.Error(
-                            CustomError(Throwable("TestException"),
-                                    CustomError.OriginLayer.DATA_LAYER)
-                    ))
+                (Result.failure(
+                    CustomError(
+                        originLayer = CustomError.OriginLayer.DOMAIN_LAYER,
+                        underLyingError = Throwable("TestException")
+                    )
+                ))
+            )
         }
 
-        useCase.execute { result ->
-            assert(result is LayerResult.Error)
+        useCase.executeCall { result ->
+            assert(result.isFailure)
         }
     }
 

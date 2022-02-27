@@ -15,7 +15,8 @@ import org.koin.dsl.module
 
 val charactersRepoModule = module {
 
-    fun provideCharactersRepoModule(service: CharacterService): CharactersListRepo = CharactersListRepoImpl(service)
+    fun provideCharactersRepoModule(service: CharacterService): CharactersListRepo =
+        CharactersListRepoImpl(service)
     single { provideCharactersRepoModule(get()) }
 }
 
@@ -27,7 +28,8 @@ val imagesRepoModule = module {
 
 val characterDetailRepoModule = module {
 
-    fun provideCharacterDetailRepoModule(service: CharacterService): CharacterDetailRepo = CharacterDetailRepoImpl(service)
+    fun provideCharacterDetailRepoModule(service: CharacterService): CharacterDetailRepo =
+        CharacterDetailRepoImpl(service)
     single { provideCharacterDetailRepoModule(get()) }
 }
 
@@ -39,7 +41,8 @@ val charactersUseCaseModule = module {
 
 val characterDetailsUseCaseModule = module {
 
-    fun provideCharacterDetailsUseCaseModule(repo: CharacterDetailRepo) = CharacterDetailUseCase(repo)
+    fun provideCharacterDetailsUseCaseModule(repo: CharacterDetailRepo) =
+        CharacterDetailUseCase(repo)
     single { provideCharacterDetailsUseCaseModule(get()) }
 }
 
@@ -52,11 +55,12 @@ val imagesUseCaseModule = module {
 val characterServiceModule = module {
 
     fun provideCharacterServiceModule() = CharacterService()
-    single{ provideCharacterServiceModule()}
+    single { provideCharacterServiceModule() }
 }
 
 val imageServiceModule = module {
 
     fun provideImageServiceModule() = ImageService()
-    single{ provideImageServiceModule()}
+    single { provideImageServiceModule() }
 }
+
