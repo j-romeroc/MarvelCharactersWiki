@@ -1,0 +1,12 @@
+com/jarc/marvelcharacterswiki/BuildConfig.java
+ com.jarc.marvelcharacterswiki.BuildConfig
+com/jarc/marvelcharacterswiki/databinding/FragmentWebViewBinding.java
+ com.jarc.marvelcharacterswiki.databinding.FragmentWebViewBinding
+com/jarc/marvelcharacterswiki/databinding/FragmentCharactersListBinding.java
+ com.jarc.marvelcharacterswiki.databinding.FragmentCharactersListBinding
+com/jarc/marvelcharacterswiki/DataBindingTriggerClass.java
+ com.jarc.marvelcharacterswiki.DataBindingTriggerClass
+com/jarc/marvelcharacterswiki/databinding/FragmentCharacterDetailBinding.java
+ com.jarc.marvelcharacterswiki.databinding.FragmentCharacterDetailBinding
+com/jarc/marvelcharacterswiki/databinding/CharacterItemBinding.java
+ com.jarc.marvelcharacterswiki.databinding.CharacterItemBinding

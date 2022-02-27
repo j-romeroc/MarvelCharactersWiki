@@ -1,0 +1,1 @@
+[{"navFile":"src\\main\\res\\navigation\\navigation_graph.xml","javaFiles":["com.jarc.marvelcharacterswiki.ui.fragments.CharactersListFragmentDirections","com.jarc.marvelcharacterswiki.ui.fragments.CharacterDetailFragmentDirections","com.jarc.marvelcharacterswiki.ui.fragments.CharacterDetailFragmentArgs","com.jarc.marvelcharacterswiki.ui.fragments.WebViewFragmentArgs"]}]

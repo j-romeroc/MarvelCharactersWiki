@@ -1,0 +1,96 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.jarc.marvelcharacterswiki"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="16"
+8-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="31" />
+9-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:6:5-67
+11-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:6:22-64
+12    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+12-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:7:5-79
+12-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:7:22-76
+13
+14    <application
+14-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:9:5-27:19
+15        android:name="com.jarc.marvelcharacterswiki.MainApplication"
+15-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:10:9-69
+16        android:allowBackup="true"
+16-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:11:9-35
+17        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+17-->[androidx.core:core:1.7.0] C:\Users\joshu\.gradle\caches\transforms-3\b081cb3c99550db0dd4b053f3f2687ab\transformed\core-1.7.0\AndroidManifest.xml:24:18-86
+18        android:debuggable="true"
+19        android:icon="@mipmap/ic_launcher"
+19-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:12:9-43
+20        android:label="@string/app_name"
+20-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:13:9-41
+21        android:networkSecurityConfig="@xml/network_security_config"
+21-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:16:9-69
+22        android:roundIcon="@mipmap/ic_launcher_round"
+22-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:14:9-54
+23        android:supportsRtl="true"
+23-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:15:9-35
+24        android:testOnly="true"
+25        android:theme="@style/Theme.AppCompat" >
+25-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:17:9-47
+26        <activity
+26-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:19:9-26:20
+27            android:name="com.jarc.marvelcharacterswiki.ui.MainActivity"
+27-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:19:19-79
+28            android:exported="true" >
+28-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:20:13-36
+29            <intent-filter>
+29-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:21:13-25:29
+30                <action android:name="android.intent.action.MAIN" />
+30-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:22:17-69
+30-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:22:25-66
+31
+32                <category android:name="android.intent.category.LAUNCHER" />
+32-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:24:17-77
+32-->C:\Users\joshu\Repo\marvel-characters-android-master\app\src\main\AndroidManifest.xml:24:27-74
+33            </intent-filter>
+34        </activity>
+35
+36        <uses-library
+36-->[androidx.window:window:1.0.0] C:\Users\joshu\.gradle\caches\transforms-3\ec170021406f684b4fd3f7d6bc606ccf\transformed\jetified-window-1.0.0\AndroidManifest.xml:25:9-27:40
+37            android:name="androidx.window.extensions"
+37-->[androidx.window:window:1.0.0] C:\Users\joshu\.gradle\caches\transforms-3\ec170021406f684b4fd3f7d6bc606ccf\transformed\jetified-window-1.0.0\AndroidManifest.xml:26:13-54
+38            android:required="false" />
+38-->[androidx.window:window:1.0.0] C:\Users\joshu\.gradle\caches\transforms-3\ec170021406f684b4fd3f7d6bc606ccf\transformed\jetified-window-1.0.0\AndroidManifest.xml:27:13-37
+39        <uses-library
+39-->[androidx.window:window:1.0.0] C:\Users\joshu\.gradle\caches\transforms-3\ec170021406f684b4fd3f7d6bc606ccf\transformed\jetified-window-1.0.0\AndroidManifest.xml:28:9-30:40
+40            android:name="androidx.window.sidecar"
+40-->[androidx.window:window:1.0.0] C:\Users\joshu\.gradle\caches\transforms-3\ec170021406f684b4fd3f7d6bc606ccf\transformed\jetified-window-1.0.0\AndroidManifest.xml:29:13-51
+41            android:required="false" />
+41-->[androidx.window:window:1.0.0] C:\Users\joshu\.gradle\caches\transforms-3\ec170021406f684b4fd3f7d6bc606ccf\transformed\jetified-window-1.0.0\AndroidManifest.xml:30:13-37
+42
+43        <provider
+43-->[androidx.emoji2:emoji2:1.0.0] C:\Users\joshu\.gradle\caches\transforms-3\39e60ce0acadd8c1568e0153724f57fe\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
+44            android:name="androidx.startup.InitializationProvider"
+44-->[androidx.emoji2:emoji2:1.0.0] C:\Users\joshu\.gradle\caches\transforms-3\39e60ce0acadd8c1568e0153724f57fe\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:27:13-67
+45            android:authorities="com.jarc.marvelcharacterswiki.androidx-startup"
+45-->[androidx.emoji2:emoji2:1.0.0] C:\Users\joshu\.gradle\caches\transforms-3\39e60ce0acadd8c1568e0153724f57fe\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:28:13-68
+46            android:exported="false" >
+46-->[androidx.emoji2:emoji2:1.0.0] C:\Users\joshu\.gradle\caches\transforms-3\39e60ce0acadd8c1568e0153724f57fe\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:29:13-37
+47            <meta-data
+47-->[androidx.emoji2:emoji2:1.0.0] C:\Users\joshu\.gradle\caches\transforms-3\39e60ce0acadd8c1568e0153724f57fe\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
+48                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+48-->[androidx.emoji2:emoji2:1.0.0] C:\Users\joshu\.gradle\caches\transforms-3\39e60ce0acadd8c1568e0153724f57fe\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:32:17-75
+49                android:value="androidx.startup" />
+49-->[androidx.emoji2:emoji2:1.0.0] C:\Users\joshu\.gradle\caches\transforms-3\39e60ce0acadd8c1568e0153724f57fe\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:33:17-49
+50            <meta-data
+50-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\joshu\.gradle\caches\transforms-3\48f309cbb3b400ae5c5c81c19ad91946\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
+51                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+51-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\joshu\.gradle\caches\transforms-3\48f309cbb3b400ae5c5c81c19ad91946\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
+52                android:value="androidx.startup" />
+52-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\joshu\.gradle\caches\transforms-3\48f309cbb3b400ae5c5c81c19ad91946\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
+53        </provider>
+54    </application>
+55
+56</manifest>

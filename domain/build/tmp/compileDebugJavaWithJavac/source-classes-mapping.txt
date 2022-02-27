@@ -1,0 +1,2 @@
+com/jarc/domain/BuildConfig.java
+ com.jarc.domain.BuildConfig

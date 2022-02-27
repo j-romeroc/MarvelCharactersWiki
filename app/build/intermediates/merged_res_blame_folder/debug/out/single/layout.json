@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "C:\\Users\\joshu\\Repo\\marvel-characters-android-master\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_character_detail.xml",
+        "source": "C:\\Users\\joshu\\Repo\\marvel-characters-android-master\\app\\src\\main\\res\\layout\\fragment_character_detail.xml"
+    },
+    {
+        "merged": "C:\\Users\\joshu\\Repo\\marvel-characters-android-master\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\character_item.xml",
+        "source": "C:\\Users\\joshu\\Repo\\marvel-characters-android-master\\app\\src\\main\\res\\layout\\character_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\joshu\\Repo\\marvel-characters-android-master\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_web_view.xml",
+        "source": "C:\\Users\\joshu\\Repo\\marvel-characters-android-master\\app\\src\\main\\res\\layout\\fragment_web_view.xml"
+    },
+    {
+        "merged": "C:\\Users\\joshu\\Repo\\marvel-characters-android-master\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_characters_list.xml",
+        "source": "C:\\Users\\joshu\\Repo\\marvel-characters-android-master\\app\\src\\main\\res\\layout\\fragment_characters_list.xml"
+    }
+]
