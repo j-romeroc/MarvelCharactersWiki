@@ -69,9 +69,9 @@ class CharactersListFragment : Fragment(), CharacterImageListener {
 
         binding.rvCharacters.apply {
 
-            this.layoutManager = activity?.let { fa ->
+            this.layoutManager = activity?.let { fragmentActivity ->
                 LinearLayoutManager(
-                    fa
+                    fragmentActivity
                 )
             }
 
@@ -90,29 +90,6 @@ class CharactersListFragment : Fragment(), CharacterImageListener {
 
         binding.rvCharacters.adapter = adapter
     }
-
-
-/*    private fun askForData() {
-        progressBar?.visibility = View.VISIBLE
-
-        presenter.fetchCharacterList { result ->
-
-            activity?.runOnUiThread {
-
-                progressBar?.visibility = View.GONE
-
-                when (result) {
-
-                    is LayerResult.Success -> {
-                        result.value?.let { renderView(it) }
-                    }
-                    is LayerResult.Error -> {
-                        renderError(result.error as CustomError)
-                    }
-                }
-            }
-        }
-    }*/
 
     private fun renderView(characters: List<CharacterModel>) {
         progressBar?.visibility = View.GONE
