@@ -68,46 +68,38 @@ class CharacterDetailFragment : Fragment() {
 
     private fun renderView(character: CharacterDetailModel) {
 
-        activity?.runOnUiThread {
+        binding.tvCharacterName.text = character.name
+        binding.tvCharacterDescription.text =
+            character.description.ifEmpty { activity?.resources?.getString(R.string.description_not_available) }
 
-            binding.tvCharacterName.text = character.name
-            binding.tvCharacterDescription.text =
-                character.description.ifEmpty { activity?.resources?.getString(R.string.description_not_available) }
+        binding.tvComicsCount.text = "${character.comicsCount} Comics"
+        binding.tvSeriesCount.text = "${character.seriesCount} Series"
+        binding.tvStoriesCount.text = "${character.storiesCount} Stories"
 
-            binding.tvComicsCount.text = "${character.comicsCount} Comics"
-            binding.tvSeriesCount.text = "${character.seriesCount} Series"
-            binding.tvStoriesCount.text = "${character.storiesCount} Stories"
-
-            binding.btnMoreInfo.setOnClickListener {
-                val action =
-                    CharacterDetailFragmentDirections.actionSecondFragmentToWebview(character.detailUrl)
-                binding.btnMoreInfo.findNavController().navigate(action)
-            }
-
-            viewModel.getImageDetail(
-                imageInfo = Thumbnail(character.thumbnail.path, character.thumbnail.extension),
-                origin = AspectRatio.Origin.DETAIL
-            )
+        binding.btnMoreInfo.setOnClickListener {
+            val action =
+                CharacterDetailFragmentDirections.actionSecondFragmentToWebview(character.detailUrl)
+            binding.btnMoreInfo.findNavController().navigate(action)
         }
+
+        viewModel.getImageDetail(
+            imageInfo = Thumbnail(character.thumbnail.path, character.thumbnail.extension),
+            origin = AspectRatio.Origin.DETAIL
+        )
 
     }
 
     private fun renderCharacterImage(bitmap: Bitmap) {
-        activity?.runOnUiThread {
-            binding.characterImage.setImageBitmap(bitmap)
-        }
+        binding.characterImage.setImageBitmap(bitmap)
     }
 
     private fun renderDefaultImage() {
-        activity?.runOnUiThread {
-            val defaultBmp = BitmapFactory.decodeResource(
-                activity?.resources,
-                R.drawable.image_not_available_marvel
-            )
+        val defaultBmp = BitmapFactory.decodeResource(
+            activity?.resources,
+            R.drawable.image_not_available_marvel
+        )
 
-            binding.characterImage.setImageBitmap(defaultBmp)
-        }
-
+        binding.characterImage.setImageBitmap(defaultBmp)
     }
 
     private fun renderError(errorInfo: Throwable) {
